@@ -80,10 +80,17 @@ def make_text(chains):
 
     #Choosing random word from value list, append to text, generate new key, repeat
     #Repeat until loop reaches end of original file or punctuation in punctuation list 
-    while chains[key] != [] and key[-1][-1] not in punctuation and len(text) <= 140: 
+    while chains[key] != [] and key[-1][-1] not in punctuation: 
 
         next_word = choice(chains[key])
-        text = text + " " + next_word
+
+        provisional_text = text + " " + next_word
+
+        if len(provisional_text) <= 140:
+            text = provisional_text
+        else:
+            break
+
         key = key[1:] + (next_word,)
 
     return text
@@ -103,6 +110,8 @@ def tweet(chains):
     # print api.VerifyCredentials()
 
     tweet = api.PostUpdate(chains)
+
+    print type(tweet)
 
     print tweet.text
 
